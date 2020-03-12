@@ -39,7 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/Planet.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/Point.o \
-	${OBJECTDIR}/SpaceObject.o
+	${OBJECTDIR}/SpaceObject.o \
+	${OBJECTDIR}/Star.o
 
 
 # C Compiler Flags
@@ -90,6 +91,11 @@ ${OBJECTDIR}/SpaceObject.o: SpaceObject.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SpaceObject.o SpaceObject.cpp
+
+${OBJECTDIR}/Star.o: Star.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++14 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Star.o Star.cpp
 
 # Subprojects
 .build-subprojects:
