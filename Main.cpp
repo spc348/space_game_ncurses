@@ -16,6 +16,7 @@
 #include "Star.h"
 #include <vector>
 #include <cstdlib>
+#include "Asteroid.h"
 
 using namespace std;
 
@@ -62,14 +63,8 @@ int main() {
     init_pair(3, COLOR_BLUE, COLOR_BLACK);
     // alt planet
     init_pair(4, COLOR_GREEN, COLOR_BLACK);
-
-    // Player
-    // -- spawn point
-    Point spawn(4, 4);
-    // -- object
-    Player test(&debugLog, spawn, '^', bounds);
-    // add to spaceobject list
-    sos.push_back(&test);
+    // collision
+    init_pair(5, COLOR_RED, COLOR_BLACK);
 
     // Planet
     // -- create random number of planets
@@ -101,8 +96,30 @@ int main() {
         sos.push_back(star);
     }
 
+    // Player
+    // add player after stars and planets
+    // -- spawn point
+    Point spawn(4, 4);
+    // -- object
+    Player* test = new Player(&debugLog, spawn, '^', bounds, 2);
+    test->setColorPair(2);
+    // add to spaceobject list
+    sos.push_back(test);
+
+    // 
+    for (int i = 0; i < 5; i++) {
+        Point asteroidSpawn((max_y / 2) + rand() % 20, (max_x / 2) + rand() % 20);
+        int direction{0};
+        direction = rand() % 4;
+        // asteroid has larger collider radius
+        Asteroid* ast = new Asteroid(&debugLog, asteroidSpawn, 'Q', bounds, 2, direction);
+        // drawing asteroid last
+        sos.push_back(ast);
+    }
+
+    bool gameOver{false};
     /// <---  game loop start ---> ///
-    while (1) {
+    while (!gameOver) {
         // check if screen resized
         getmaxyx(stdscr, max_y, max_x);
         // ncurses boiler plate
@@ -121,25 +138,73 @@ int main() {
             if (starMorph) {
                 starMorph->update();
             }
-            // set next object to be drawn's color pair
-            attron(COLOR_PAIR((*it)->getColorPair()));
-            // draw the icon
-            (*it)->draw();
-            // disable objects color pair
-            attroff(COLOR_PAIR((*it)->getColorPair()));
-        }
-        
-        // draw debug log for information
-        if (!debugLog.empty()) {
-            mvprintw(max_y - 2, 0, debugLog.front().c_str());
-        }
 
+            Asteroid* asteroid = dynamic_cast<Asteroid*> (*it);
+            if (asteroid) {
+                asteroid->update();
+            }
+
+            // track if collision occurred
+            bool collisionFlag{false};
+
+            Collider* colliderLeft = dynamic_cast<Collider*> (*it);
+            if (colliderLeft) {
+                // check for collision
+                for (vector < SpaceObject*>::iterator col = sos.begin(); col != sos.end(); col++) {
+                    collisionFlag = false;
+                    Collider* colliderRight = dynamic_cast<Collider*> (*col);
+                    //
+                    if (colliderRight) {
+                        // ignore self
+                        if (colliderLeft == colliderRight) {
+                            continue;
+                        }
+                        // assign collisionflag outcome
+                        collisionFlag = colliderLeft->collide(colliderRight);
+                        // break from loop if collision occurs
+                        if (collisionFlag) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (player && colliderLeft && colliderLeft->isColliding()) {
+                // set next object to be drawn's color pair
+                attron(COLOR_PAIR(5));
+                // draw the icon
+                (*it)->draw();
+                // disable objects color pair
+                attroff(COLOR_PAIR(5));
+            } else {
+                // set next object to be drawn's color pair
+                attron(COLOR_PAIR((*it)->getColorPair()));
+                // draw the icon
+                (*it)->draw();
+                // disable objects color pair
+                attroff(COLOR_PAIR((*it)->getColorPair()));
+            }
+            // draw debug log for information
+            if (!debugLog.empty()) {
+                mvprintw(max_y - 2, 0, debugLog.front().c_str());
+            }
+
+            // check if player hit
+            if (player) {
+                gameOver = player->getGameOver();
+            }
+
+        }
         // check for user input
         int input = getch();
         if (input != ERR) {
-            test.getInput(input);
+            test->getInput(input);
         }
     } // end while
+
+    for (vector<SpaceObject*>::iterator it = sos.begin(); it != sos.end(); it++) {
+        delete(*it);
+    }
 
     endwin();
 }

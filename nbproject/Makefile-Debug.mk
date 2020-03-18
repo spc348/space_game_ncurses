@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Asteroid.o \
+	${OBJECTDIR}/Collider.o \
 	${OBJECTDIR}/Main.o \
 	${OBJECTDIR}/Planet.o \
 	${OBJECTDIR}/Player.o \
@@ -66,6 +68,16 @@ LDLIBSOPTIONS=`pkg-config --libs ncurses` `pkg-config --libs ncurses++` `pkg-con
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppapplication_1: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppapplication_1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/Asteroid.o: Asteroid.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall `pkg-config --cflags ncurses` `pkg-config --cflags ncurses++` `pkg-config --cflags ncurses++w` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Asteroid.o Asteroid.cpp
+
+${OBJECTDIR}/Collider.o: Collider.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall `pkg-config --cflags ncurses` `pkg-config --cflags ncurses++` `pkg-config --cflags ncurses++w` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Collider.o Collider.cpp
 
 ${OBJECTDIR}/Main.o: Main.cpp
 	${MKDIR} -p ${OBJECTDIR}

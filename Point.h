@@ -28,6 +28,8 @@ public:
     void setY(int);
     // function for debugging
     string pointString();
+    // equals operator override for collider
+    friend bool operator==(const Point&, const Point&);
 private:
     // x coordinate
     int x;

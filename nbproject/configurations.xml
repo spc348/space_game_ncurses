@@ -4,6 +4,8 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Asteroid.h</itemPath>
+      <itemPath>Collider.h</itemPath>
       <itemPath>Planet.h</itemPath>
       <itemPath>Player.h</itemPath>
       <itemPath>Point.h</itemPath>
@@ -17,6 +19,8 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Asteroid.cpp</itemPath>
+      <itemPath>Collider.cpp</itemPath>
       <itemPath>Main.cpp</itemPath>
       <itemPath>Planet.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
@@ -57,6 +61,14 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="Asteroid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Asteroid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Collider.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Collider.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Planet.cpp" ex="false" tool="1" flavor2="0">
@@ -101,6 +113,14 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="Asteroid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Asteroid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Collider.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Collider.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Planet.cpp" ex="false" tool="1" flavor2="0">

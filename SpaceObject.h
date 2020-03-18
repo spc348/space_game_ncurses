@@ -22,6 +22,7 @@ public:
     SpaceObject();
     // ctr
     SpaceObject(queue<string>*, Point, char, Point);
+    virtual ~SpaceObject(){}
     // draw the icon
     virtual void draw() const;
     // send message to debug log
@@ -30,6 +31,10 @@ public:
     void setBounds(Point);
     // virtual method to allow derived classes to change their color
     virtual int getColorPair();
+    // return location for collision
+    Point* getLoc();
+    // Allow change of color;
+    void setColorPair(int);
 protected:
     // queue of debug messages
     queue<string>* debug;
@@ -39,6 +44,8 @@ protected:
     char identifier;
     // bounds in type Point
     Point bounds;
+    // color variable 
+    int colorPair;
 };
 
 #endif /* SPACEOBJECT_H */

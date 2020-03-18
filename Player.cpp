@@ -8,8 +8,9 @@
 #include "Player.h"
 
 // ctr
-Player::Player(queue<string>* debug, Point p, char id, Point bounds) : SpaceObject(debug, p, id, bounds), currentDir{0}
-{
+
+Player::Player(queue<string>* debug, Point p, char id, Point bounds, int bubble)
+: SpaceObject(debug, p, id, bounds), currentDir(0), Collider(&loc, bubble, debug), gameOver(false) {
 }
 
 void Player::getInput(int i) {
@@ -66,7 +67,7 @@ void Player::update() {
                 mvprintw(15 - 1, 0, std::to_string(next).c_str());
         }
         keyPresses.pop();
-    }        // update player location to cause the ship to float
+    }// update player location to cause the ship to float
     else {
         switch (this->currentDir) {
             case 0:
@@ -123,4 +124,15 @@ void Player::draw() const {
 int Player::getColorPair() {
     // yellow on black
     return 2;
+}
+// collision call back
+
+void Player::onCollision() {
+    this->gameOver = true;
+}
+
+// check if player hit
+
+bool Player::getGameOver() {
+    return this->gameOver;
 }
