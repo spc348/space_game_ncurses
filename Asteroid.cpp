@@ -13,6 +13,7 @@ Asteroid::Asteroid(queue<string>* log, Point location, char c, Point bounds, int
 : SpaceObject(log, location, c, bounds), Collider(&loc, b, log), currentDir(dir) {
 }
 
+// function called each frame
 void Asteroid::update() {
     switch (this->currentDir) {
         case 0:
@@ -60,6 +61,8 @@ void Asteroid::update() {
     }
 }
 
+// call back on collision
+// should occur when hitting other asteroids
 void Asteroid::onCollision() {
     // seed random
     srand(time(0));

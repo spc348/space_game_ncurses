@@ -15,8 +15,11 @@
 
 class Asteroid : public SpaceObject, public Collider {
 public:
+    //ctr
     Asteroid(queue<string>*, Point, char, Point, int, int);
+    // called once per frame
     void update();
+    // collision call back
     void onCollision() override;
 private:
     int currentDir;

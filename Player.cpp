@@ -68,6 +68,7 @@ void Player::update() {
         }
         keyPresses.pop();
     }// update player location to cause the ship to float
+    // create movement between key presses
     else {
         switch (this->currentDir) {
             case 0:

@@ -28,8 +28,6 @@ public:
     int getBubble();
     // currently colliding
     bool isColliding();
-    // alternative collision check
-    friend bool pointCollision(Collider&, Collider&);
     // on collision call back
     virtual void onCollision() = 0;
 private:

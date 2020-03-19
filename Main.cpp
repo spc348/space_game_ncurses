@@ -52,6 +52,7 @@ int main() {
     getmaxyx(stdscr, max_y, max_x);
     // convert bounds to a point
     Point bounds{max_y, max_x};
+    debugLog.push(bounds.pointString());
 
     // color boilerplate
     start_color();
@@ -101,22 +102,25 @@ int main() {
     // -- spawn point
     Point spawn(4, 4);
     // -- object
-    Player* test = new Player(&debugLog, spawn, '^', bounds, 2);
+    Player* test = new Player(&debugLog, spawn, '^', bounds, 1);
     test->setColorPair(2);
     // add to spaceobject list
     sos.push_back(test);
 
-    // 
+    // create asteroids
     for (int i = 0; i < 5; i++) {
         Point asteroidSpawn((max_y / 2) + rand() % 20, (max_x / 2) + rand() % 20);
+        // variable to store cardinal direction of asteroid
         int direction{0};
+        // choose direction of asteroid
         direction = rand() % 4;
         // asteroid has larger collider radius
-        Asteroid* ast = new Asteroid(&debugLog, asteroidSpawn, 'Q', bounds, 2, direction);
+        Asteroid* ast = new Asteroid(&debugLog, asteroidSpawn, 'O', bounds, 1, direction);
         // drawing asteroid last
         sos.push_back(ast);
     }
 
+    // variable to store player collision
     bool gameOver{false};
     /// <---  game loop start ---> ///
     while (!gameOver) {
@@ -138,7 +142,7 @@ int main() {
             if (starMorph) {
                 starMorph->update();
             }
-
+            // cast as asteroid to update it
             Asteroid* asteroid = dynamic_cast<Asteroid*> (*it);
             if (asteroid) {
                 asteroid->update();
@@ -146,7 +150,7 @@ int main() {
 
             // track if collision occurred
             bool collisionFlag{false};
-
+            // check if this object also inherits from Collider
             Collider* colliderLeft = dynamic_cast<Collider*> (*it);
             if (colliderLeft) {
                 // check for collision
@@ -168,7 +172,8 @@ int main() {
                     }
                 }
             }
-
+            
+            // shade the player red when hit
             if (player && colliderLeft && colliderLeft->isColliding()) {
                 // set next object to be drawn's color pair
                 attron(COLOR_PAIR(5));
@@ -187,6 +192,7 @@ int main() {
             // draw debug log for information
             if (!debugLog.empty()) {
                 mvprintw(max_y - 2, 0, debugLog.front().c_str());
+                debugLog.pop();
             }
 
             // check if player hit
@@ -202,6 +208,7 @@ int main() {
         }
     } // end while
 
+    // clean up pointers
     for (vector<SpaceObject*>::iterator it = sos.begin(); it != sos.end(); it++) {
         delete(*it);
     }
